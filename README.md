@@ -2,6 +2,4 @@
 
 Josef's creative coding fall 2024 repo :)
 
-## projects
-
-- midterm
+includes classwork and projects
