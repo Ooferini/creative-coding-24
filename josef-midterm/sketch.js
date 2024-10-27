@@ -38,18 +38,30 @@ class furTip {
   constructor(furWidth, furHeight) {
     this.furWidth = furWidth;
     this.loc = createVector(furWidth / 2, furHeight);
-    this.vel = createVector(0.5, 0);
+    this.vel = createVector(0, 0);
     this.accel = createVector(0, 0);
   }
 
   update() {
-    print("tip update run");
+    print(
+      "tip update run " +
+        "x: " +
+        this.loc.x +
+        " y: " +
+        this.loc.y +
+        " accel.x: " +
+        this.accel.x +
+        " accel.y: " +
+        this.accel.y
+    );
     this.loc.add(this.vel);
     this.vel.add(this.accel);
     if (this.loc.x > this.furWidth / 2) {
-      this.accel += 1;
+      this.vel.x = -1;
+      this.accel.x -= 10;
     } else if (this.loc.x <= this.furWidth / 2) {
-      this.accel -= 1;
+      this.vel.x = 1;
+      this.accel.x += 10;
     }
   }
 }
