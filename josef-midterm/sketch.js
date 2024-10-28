@@ -1,19 +1,29 @@
+//NEED TO COMMENT EVERYTHING
+
 let furs = [];
 let pixels = [];
 let fuzzOn = false;
 let fuzzStage = 0;
+let fuzzCount = 0;
+let fakeCursorx = 0;
+let fakeCursory = 0;
+let scene3 = false;
+let invert = 1;
 
 function setup() {
+  noCursor();
   createCanvas(800, 800);
   background("#DAD2D8");
   frameRate(60);
-  for (let i = 0; i < 8; i++) {
-    let j = new fur(100, 100, 100 * i, 0, true);
-    furs.push(j);
-  }
-  for (let i = 0; i < 8; i++) {
-    let j = new fur(100, 100, 100 * i, height - 200, false);
-    furs.push(j);
+  for (let k = 0; k < 800; k += 200) {
+    for (let i = 0; i < 8; i++) {
+      let j = new fur(100, 100, 100 * i, k, true);
+      furs.push(j);
+    }
+    for (let i = 0; i < 8; i++) {
+      let j = new fur(100, 100, 100 * i, k + 200, false);
+      furs.push(j);
+    }
   }
   for (var i = 0; i < 800; i += 20) {
     for (var j = 0; j < 800; j += 20) {
@@ -25,14 +35,40 @@ function setup() {
 
 function draw() {
   background("#DAD2D8");
-  for (let i = 0; i < 8; i++) {
-    furs[i].update();
-  }
-  if (fuzzOn) {
-    for (let i = 0; i < 1600; i++) {
-      pixels[i].update();
+  if (!scene3) {
+    for (let i = 0; i < furs.length; i++) {
+      furs[i].update();
     }
-    fuzzStage++;
+    if (fuzzOn) {
+      fuzzCount++;
+      for (let i = 0; i < 1600; i++) {
+        pixels[i].update();
+      }
+      if (fuzzStage < 255) {
+        fuzzStage++;
+      }
+    }
+    if (fuzzCount >= 400) {
+      startScene3();
+    }
+  } else {
+    if (frameCount % 4 == 0 && random(0, 1) > 0.3) {
+      invert *= -1;
+    }
+    rect(fakeCursorx, fakeCursory, 10, 10);
+    fakeCursorx += random(-3, 3) + invert * (mouseX - pmouseX);
+    fakeCursory += random(-3, 3) + invert * (mouseY - pmouseY);
+    if (fakeCursorx < 0) {
+      fakeCursorx = 0;
+    } else if (fakeCursorx > width) {
+      fakeCursorx = width;
+    }
+    if (fakeCursory < 0) {
+      fakeCursory = 0;
+    }
+    if (fakeCursory > height) {
+      fakeCursory = height;
+    }
   }
 }
 
@@ -50,7 +86,8 @@ class fur {
     push();
     translate(this.xoffset, this.yoffset);
     if (!this.up) {
-      rotateZ(HALF_PI);
+      translate(100, 0);
+      rotate(PI);
     }
     this.tip.update();
     print("update run");
@@ -97,4 +134,13 @@ class fuzzyPixel {
     fill(value, value, value, fuzzStage);
     rect(this.x, this.y, 20, 20);
   }
+}
+
+function startScene3() {
+  scene3 = true;
+  noCursor();
+  fill(0);
+  noStroke();
+  fakeCursorx = mouseX;
+  fakeCursory = mouseY;
 }
