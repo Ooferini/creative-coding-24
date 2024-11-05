@@ -13,18 +13,28 @@ let invert = 1;
 function setup() {
   noCursor();
   createCanvas(800, 800);
-  background("#DAD2D8");
+  background('#272727');
   frameRate(60);
-  for (let k = 0; k < 800; k += 200) {
-    for (let i = 0; i < 8; i++) {
-      let j = new fur(100, 100, 100 * i, k, true);
-      furs.push(j);
+  //create array of fur objects
+  for (let i = 0; i < 800; i += 200) {
+    for (let j = 0; j < 8; j++) {
+      let k = new fur(100, 100, 100 * j, i, true);
+      let l = new fur(100, 100, 100 * j, i, true);
+      let m = new fur(100, 100, 100 * j, i, true);
+      furs.push(k);
+      furs.push(l);
+      furs.push(m);
     }
-    for (let i = 0; i < 8; i++) {
-      let j = new fur(100, 100, 100 * i, k + 200, false);
-      furs.push(j);
+    for (let j = 0; j < 8; j++) {
+      let k = new fur(100, 100, 100 * j, i + 200, false);
+      let l = new fur(100, 100, 100 * j, i + 200, false);
+      let m = new fur(100, 100, 100 * j, i + 200, false);
+      furs.push(k);
+      furs.push(l);
+      furs.push(m);
     }
   }
+  //create array of pixels for scene 2
   for (var i = 0; i < 800; i += 20) {
     for (var j = 0; j < 800; j += 20) {
       let pixel = new fuzzyPixel(i, j);
@@ -34,7 +44,7 @@ function setup() {
 }
 
 function draw() {
-  background("#DAD2D8");
+  background('#272727');
   if (!scene3) {
     for (let i = 0; i < furs.length; i++) {
       furs[i].update();
@@ -90,10 +100,11 @@ class fur {
       rotate(PI);
     }
     this.tip.update();
-    print("update run");
+    print('update run');
     let x = this.tip.loc.x;
     let y = this.tip.loc.y;
-    fill(0);
+    fill('#EEE0CB');
+    noStroke();
     beginShape();
     vertex(0, 0);
     bezierVertex(-20, 20, x - 20, 80, x + 20, y);
@@ -144,3 +155,11 @@ function startScene3() {
   fakeCursorx = mouseX;
   fakeCursory = mouseY;
 }
+
+// make a button for the fuzzy mouse
+// disoriented
+// degraded image
+// non-linear
+// change color for scene 1
+// make scene 1 shapes fuzzier (opacity, rounder shapes, multiple editions)
+// radio noise
